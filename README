@@ -1,0 +1,73 @@
+ShouldB
+=======
+
+An alternative Rails testing framework which extends
+Test::Unit with some useful helper methods covering common scenarios.
+Gives useful error messages.
+
+In my opinion it has a slightly clearer syntax which suits the
+Test::Unit style better than current solutions (IMHO).
+
+Why?
+Hash syntax is pretty.
+
+Its a work in progress and only covers common scenarios,
+being able to write your own assertions would be useful...
+
+Example
+=======
+
+get :new
+should :render => 'something/new'
+
+# 
+
+get :new
+should :assign_new => Something
+
+# 
+
+get :edit, :id => something.id
+assigned(Something).should_be something
+
+# 
+
+get :new
+should :redirect_to => '/login'
+
+# 
+
+post :create, :something => attrib
+
+should :send_email => {
+  :from => 'me@example.com',
+  :to => 'you@example.com',
+  :containing => "something awesome"
+}
+
+# 
+
+should :create => Something do
+  post :create, :something => attrib
+end
+
+# 
+
+should :delete => Something do
+  put :destroy, :id => something.id
+end
+
+# 
+
+should_not :delete => Something do
+  put :destroy, :id => something.id
+end
+
+# 
+
+should_not :create => Something do
+  post :create, :something => attrib
+end
+
+
+Copyright (c) 2009 [Brent Greeff], released under the MIT license
