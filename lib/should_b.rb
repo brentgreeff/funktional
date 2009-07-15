@@ -1,4 +1,4 @@
-module Should
+module ShouldB
   
   def should(params, &block)
     method = "should_#{params.keys.first}".to_sym
