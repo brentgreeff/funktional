@@ -70,12 +70,20 @@ module ShouldB
     assert_template template
   end
   
-  def should_assign_new(klass)
-    symbol = klass.to_s.tableize.singularize.to_sym
-    
-    assert_not_nil assigns(symbol), "No [#{symbol}] assigned"
-    assert assigns(symbol).new_record?, "[#{klass}] is not a new record"
-    assert assigns(symbol).is_a?(klass), "assigned [#{symbol}] is not a [#{klass}]"
+  def should_assign_new(klass_or_symbol)
+    if klass_or_symbol.is_a? Symbol
+      symbol = klass_or_symbol
+      
+      assert_not_nil assigns(symbol), "No [:#{symbol}] assigned"
+      assert assigns(symbol).new_record?, "[:#{symbol}] is not a new record"
+    else
+      klass = klass_or_symbol
+      symbol = klass.to_s.tableize.singularize.to_sym
+      
+      assert_not_nil assigns(symbol), "No [#{symbol}] assigned"
+      assert assigns(symbol).new_record?, "[#{klass}] is not a new record"
+      assert assigns(symbol).is_a?(klass), "assigned [#{symbol}] is not a [#{klass}]"
+    end
   end
   
   def should_redirect_to(uri)
