@@ -57,11 +57,23 @@ module ShouldB
           then assert_equal details[:from], email.from
         when :to
           then assert_equal details[:to], email.to[0]
+        when :subject
+          then assert_equal details[:subject], email.subject
         when :containing
-          then assert_match /#{details[:containing]}/, email.body
+          then check_containing(email.body, details[:containing])
         else
-          flunk "Assertion [#{key}] not recognised"
+          flunk "Assertion key: [#{key}] not recognised"
       end
+    end
+  end
+  
+  def check_containing(body, should_contain)
+    if should_contain.is_a? Array
+      should_contain.each do |should_i|
+        assert_match /#{should_i}/, body
+      end
+    else
+      assert_match /#{should_contain}/, body
     end
   end
   
