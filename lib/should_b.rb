@@ -54,7 +54,7 @@ module ShouldB
     details.each_key do |key|
       case key
         when :from
-          then assert_equal details[:from], email.from
+          then assert_equal details[:from], email.from[0]
         when :to
           then assert_equal details[:to], email.to[0]
         when :subject
