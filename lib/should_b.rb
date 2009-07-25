@@ -12,6 +12,33 @@ module ShouldB
     self.send method, args, &block
   end
   
+  # Flashed
+  
+  def flashed(symbol)
+     AssignedAssertion.new(symbol, self)
+  end
+  
+  class FlashedAssertion
+    
+    def initialize(symbol, test_instance)
+      @test_instance = test_instance
+      @symbol = symbol
+    end
+    
+    def should_be(expected_value)
+      assert_equal expected_value, flash[@symbol]
+    end
+    
+    private
+    
+    def method_missing(method, *args)
+      @test_instance.send method, *args
+    end
+    
+  end
+  
+  # Assigned
+  
   def assigned(klass)
     AssignedAssertion.new(klass, self)
   end
