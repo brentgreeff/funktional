@@ -15,7 +15,7 @@ module ShouldB
   # Flashed
   
   def flashed(symbol)
-     AssignedAssertion.new(symbol, self)
+     FlashedAssertion.new(symbol, self)
   end
   
   class FlashedAssertion
