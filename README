@@ -3,19 +3,48 @@ ShouldB
 
 An alternative Rails testing framework which extends
 Test::Unit with some useful helper methods covering common scenarios.
-Gives useful error messages.
 
-In my opinion it has a slightly clearer syntax which suits the
-Test::Unit style better than current solutions (IMHO).
+It has a nice clear syntax that looks pretty
+and reads as plain English.
 
-Why?
-Hash syntax is pretty.
+Use it with the factory pattern and testing becomes a pleasure.
 
-Its a work in progress and only covers common scenarios,
-being able to write your own assertions would be useful...
+If you are not too sure about creating your own factory module,
+or how to include it into your tests,
+use the Fixture replacement plugin.
 
-Example
+
+Install
 =======
+
+Use braid to install, its great.
+braid add git://github.com/brentgreeff/should_b.git -p
+
+add a setup line to 'test/test_helper.rb'
+link so:
+
+class ActiveSupport::TestCase
+  setup :should_b
+end
+
+Unit Examples
+=============
+
+@company = create_company (this needs to be valid)
+
+@company.should_require_a :name, 'please enter the name'
+@company.should_require_an :address, 'please enter the address'
+
+# company does not require telephone_no if address present
+@company.address = Address.new
+@company.should_not_require_a :telephone_no
+
+# company should not allow creative accounting
+@company.creative_accounting = true
+@company.should_have_invalid :books, 'no creative accounting please'
+
+Functional Examples
+===================
 
 get :new
 should :render => 'something/new'
@@ -34,6 +63,11 @@ assigned(Something).should_be something
 
 get :new
 should :redirect_to => '/login'
+
+#
+
+post :create, :something => attrib
+flashed(:notice).should_be 'Yay, Something created!'
 
 # 
 
@@ -68,6 +102,39 @@ end
 should_not :create => Something do
   post :create, :something => attrib
 end
+
+
+Helpers
+=======
+
+There are also some helpers for manipulating attributes.
+
+I tend to define an attrib method in my funtional tests
+to represent valid attributes passed to create or update a resource.
+
+eg:
+
+def attrib
+  {
+    :first_name => 'Jim',
+    :last_name => 'Bean'
+  }
+end
+
+Sometimes you want to tests different values, especially invalid ones,
+to get away from all the merge noise, I have defined helpers:
+
+  missing_attrib
+  blank_attrib
+  replace_attrib
+  add_attrib
+
+Means you can write tests like the following:
+
+should_not :create => Something do
+  post :create, :something => blank_attrib(:first_name)
+end
+should :render => 'somethings/new'
 
 
 Copyright (c) 2009 [Brent Greeff], released under the MIT license
