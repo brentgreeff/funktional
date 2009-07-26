@@ -68,7 +68,7 @@ module ShouldB
     
     def check_test_instance!
       if ShouldB.test_instance.nil?
-        raise Error, 'Did you forget to (setup :should_b) in test/test_helper?'
+        raise ShouldB::Setup::Error, 'Did you forget to (setup :should_b) in test/test_helper?'
       end
     end
   end

@@ -5,5 +5,7 @@ module ShouldB
     def should_b
       ShouldB.test_instance = self
     end
+    
+    class Error < RuntimeError; end
   end
 end
