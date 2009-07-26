@@ -4,7 +4,7 @@ module ShouldB
       check_test_instance!
       must_be_valid_before_test!
       
-      assign_nil_to do |field, expected_error_message|
+      assign_nil_to(field, expected_error_message) do
         assert_invalid
       end
     end
@@ -12,7 +12,7 @@ module ShouldB
     def should_not_require_a(field)
       check_test_instance!
       
-      assign_nil_to do |field|
+      assign_nil_to(field) do
         assert_valid
       end
     end
@@ -41,7 +41,6 @@ module ShouldB
       yield
       
       assert_message(field, expected_error_message) if expected_error_message
-      
       self.send "#{field}=", saved_existing_value
       
       # clear errors
@@ -57,7 +56,7 @@ module ShouldB
     end
     
     def assert_message(field, expected_error_message)
-      ShouldB.test_instance.assert_equal expected_error_message, self.errors[field]
+      ShouldB.test_instance.assert_equal(expected_error_message, self.errors[field])
     end
     
     def must_be_valid_before_test!
