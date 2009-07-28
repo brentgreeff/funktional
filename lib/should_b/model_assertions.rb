@@ -5,7 +5,7 @@ module ShouldB
       must_be_valid_before_test!
       
       assign_nil_to(field, expected_error_message) do
-        assert_invalid("[#{self}] should require a [#{field.class}]")
+        assert_invalid("[#{self}] should require a [#{field.class.name}]")
       end
     end
     
@@ -28,7 +28,7 @@ module ShouldB
     def should_have_invalid(field, expected_error_message = nil)
       check_test_instance!
       
-      assert_invalid("[#{self}] should have invalid [#{field.class}]")
+      assert_invalid("[#{self}] should have invalid [#{field.class.name}]")
       assert_message(field, expected_error_message) if expected_error_message
     end
     
@@ -61,7 +61,7 @@ module ShouldB
     
     def must_be_valid_before_test!
       if self.invalid?
-        flunk "ShouldB requires a valid instance of #{self.class}"
+        flunk "ShouldB requires a valid instance of #{self.class.name}"
       end
     end
     
