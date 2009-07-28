@@ -28,7 +28,7 @@ module ShouldB
     def should_have_invalid(field, expected_error_message = nil)
       check_test_instance!
       
-      assert_invalid("'#{self.class.name}' should have invalid '#{field.class.name}'")
+      assert_invalid("'#{self.class.name}' should have invalid '#{field}'")
       assert_message(field, expected_error_message) if expected_error_message
     end
     
