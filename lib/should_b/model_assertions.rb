@@ -61,7 +61,8 @@ module ShouldB
     
     def must_be_valid_before_test!
       if self.invalid?
-        flunk "ShouldB requires a valid instance of #{self.class.name}"
+        error = "ShouldB requires a valid instance of #{self.class.name}"
+        ShouldB.test_instance.flunk error
       end
     end
     
