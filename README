@@ -29,19 +29,25 @@ end
 
 Unit Examples
 =============
-
-@company = create_company (this needs to be valid)
+@company = create_company (create_company needs to return a valid instance)
 
 @company.should_require_a :name, 'please enter the name'
 @company.should_require_an :address, 'please enter the address'
 
-# company does not require telephone_no if address present
-@company.address = Address.new
-@company.should_not_require_a :telephone_no
-
 # company should not allow creative accounting
 @company.creative_accounting = true
 @company.should_have_invalid :books, 'no creative accounting please'
+
+# company does not require telephone_no if address present
+@company.address = an_address
+@company.should_not_require_a :telephone_no
+
+Random Characters
+=================
+
+@company.name = 81.random_characters
+@company.should_have_invalid :name, 'max is 80'
+
 
 Functional Examples
 ===================
