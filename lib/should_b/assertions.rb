@@ -51,7 +51,7 @@ module ShouldB
     def initialize(details, test_instance)
       super(test_instance)
       
-      if ActionMailer::Base.deliveries.count < 1
+      if ActionMailer::Base.deliveries.size < 1
         flunk 'No emails have been sent'
       end
       
