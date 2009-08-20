@@ -71,14 +71,14 @@ module ShouldB
       end
     end
     
-    def check_from(email_from, expected_from)
+    def check_from(expected_from, email_from)
       if email_from.nil?
         flunk 'email is missing a [from]'
       end
       assert_equal expected_from, email_from[0]
     end
     
-    def check_to(email_to, expected_to)
+    def check_to(expected_to, email_to)
       if email_to.nil?
         flunk 'email is missing a [to]'
       end
