@@ -58,9 +58,9 @@ module ShouldB
       expectations.each_key do |key|
         case key
           when :from
-            then assert_equal check_from(expectations[:from], email.from)
+            then check_from(expectations[:from], email.from)
           when :to
-            then assert_equal check_to(expectations[:to], email.to)
+            then check_to(expectations[:to], email.to)
           when :subject
             then assert_equal expectations[:subject], email.subject
           when :containing
