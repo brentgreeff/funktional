@@ -8,8 +8,13 @@ module ShouldB
     end
     
     def should_not(params, &block)
-      method = "should_not_#{params.keys.first}".to_sym
-      args = params.values.first
+      if params.is_a? Hash
+        method = "should_not_#{params.keys.first}".to_sym
+        args = params.values.first
+      else
+        method = "should_not_#{params}".to_sym
+        args = nil
+      end
       self.send method, args, &block
     end
     
@@ -25,6 +30,13 @@ module ShouldB
     
     def should_send_email(details)
       EmailAssertion.new(details, self)
+    end
+    
+    def should_not_send_email(going_to_be_nil = nil)
+      before_count = ActionMailer::Base.deliveries.size
+      yield
+      after_count = ActionMailer::Base.deliveries.size
+      assert_equal before_count, after_count, "Email was sent"
     end
     
     def should_render(template)
