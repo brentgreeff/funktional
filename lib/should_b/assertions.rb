@@ -31,13 +31,11 @@ module ShouldB
     def initialize(klass, test_instance)
       super(test_instance)
       
-      symbol = klass.to_s.tableize.singularize.to_sym
+      @symbol = klass.to_s.tableize.singularize.to_sym
       
-      assert_not_nil assigns(symbol), "No [#{symbol}] assigned"
-      assert ! assigns(symbol).new_record?, "[#{klass}] is a new record"
-      assert assigns(symbol).is_a?(klass), "assigned [#{symbol}] is not a [#{klass}]"
-      
-      @symbol = symbol
+      assert_not_nil assigns(@symbol), "No [#{symbol}] assigned"
+      assert ! assigns(@symbol).new_record?, "[#{klass}] is a new record"
+      assert assigns(@symbol).is_a?(klass), "assigned [#{symbol}] is not a [#{klass}]"
     end
     
     def should_be(expected_value)
@@ -48,7 +46,7 @@ module ShouldB
   # Email
   
   class EmailAssertion < Assertion
-    def initialize(details, test_instance)
+    def initialize(expectations, test_instance)
       super(test_instance)
       
       if ActionMailer::Base.deliveries.size < 1
@@ -57,23 +55,37 @@ module ShouldB
       
       email = ActionMailer::Base.deliveries.last
       
-      details.each_key do |key|
+      expectations.each_key do |key|
         case key
           when :from
-            then assert_equal details[:from], email.from[0]
+            then assert_equal check_from(expectations[:from], email.from)
           when :to
-            then assert_equal details[:to], email.to[0]
+            then assert_equal check_to(expectations[:to], email.to)
           when :subject
-            then assert_equal details[:subject], email.subject
+            then assert_equal expectations[:subject], email.subject
           when :containing
-            then check_containing(email.body, details[:containing])
+            then check_containing(expectations[:containing], email.body)
           else
             flunk "Assertion key: [#{key}] not recognised"
         end
       end
     end
     
-    def check_containing(body, should_contain)
+    def check_from(email_from, expected_from)
+      if email_from.nil?
+        flunk 'email is missing a [from]'
+      end
+      assert_equal expected_from, email_from[0]
+    end
+    
+    def check_to(email_to, expected_to)
+      if email_to.nil?
+        flunk 'email is missing a [to]'
+      end
+      assert_equal expected_to, email_to[0]
+    end
+    
+    def check_containing(should_contain, body)
       if should_contain.is_a? Array
         should_contain.each do |should_i|
           assert_match /#{should_i}/, body
