@@ -65,6 +65,11 @@ module ShouldB
       assert_redirected_to uri
     end
     
+    def should_respond(expected_response)
+      assert_template 'public/404'
+      assert_response :not_found
+    end
+    
     # Delete
     
     def should_delete(klass)

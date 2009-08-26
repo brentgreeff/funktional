@@ -57,6 +57,11 @@ should :render => 'something/new'
 
 # 
 
+get :show, :id => 'does not exist'
+should :respond => 'not_found'
+
+# 
+
 get :new
 should :assign_new => Something
 
