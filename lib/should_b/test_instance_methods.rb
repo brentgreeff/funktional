@@ -66,8 +66,8 @@ module ShouldB
     end
     
     def should_respond(expected_response)
-      assert_template 'public/404'
       assert_response :not_found
+      assert_template 'public/404'
     end
     
     # Delete
