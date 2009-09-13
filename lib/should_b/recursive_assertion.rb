@@ -9,7 +9,8 @@ module ShouldB
     end
     
     def should_be(expected_value)
-      @test.assert_equal expected_value, @assigned.send @method
+      value = @assigned.send @method
+      @test.assert_equal expected_value, value
     end
     
     protected
