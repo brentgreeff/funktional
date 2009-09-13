@@ -197,7 +197,7 @@ to get away from all the merge noise, I have defined these helpers:
 * Means you can write tests like the following:
       
       should_not :create => Order do
-        post :create, :something => blank_attrib(:cc_no)
+        post :create, :order => blank_attrib(:cc_no)
       end
       should :render => 'orders/new'
 
