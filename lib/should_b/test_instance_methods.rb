@@ -19,17 +19,17 @@ module ShouldB
     end
     
     def flashed(symbol)
-       FlashedAssertion.new(symbol, self)
+       FlashedAssertion.new(symbol)
     end
     
     def assigned(klass)
-      AssignedAssertion.new(klass, self)
+      AssignedAssertion.new(klass)
     end
     
     private
     
     def should_send_email(details)
-      EmailAssertion.new(details, self)
+      EmailAssertion.new(details)
     end
     
     def should_not_send_email(going_to_be_nil = nil)
