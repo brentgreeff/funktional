@@ -15,8 +15,9 @@ module ShouldB
     
     protected
     
-    # def method_missing(method, *args)
-    #   RecursiveAssertion.new(@assigned, method)
-    # end
+    def method_missing(method, *args)
+      @assigned = @assigned.send @method
+      RecursiveAssertion.new(@assigned, method)
+    end
   end
 end
