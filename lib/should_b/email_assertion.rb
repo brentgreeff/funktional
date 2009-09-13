@@ -1,44 +1,5 @@
 module ShouldB
-  
-  class Assertion
-    protected
-    
-    def method_missing(method, *args)
-      ShouldB.test_instance.send method, *args
-    end
-  end
-  
-  # Flash
-  
-  class FlashedAssertion < Assertion
-    def initialize(symbol)
-      @symbol = symbol
-    end
-    
-    def should_be(expected_value)
-      assert_equal expected_value, flash[@symbol]
-    end
-  end
-  
-  # Assignment
-  
-  class AssignedAssertion < Assertion
-    def initialize(klass)
-      @symbol = klass.to_s.tableize.singularize.to_sym
-      
-      assert_not_nil assigns(@symbol), "No [#{@symbol}] assigned"
-      assert ! assigns(@symbol).new_record?, "[#{klass}] is a new record"
-      assert assigns(@symbol).is_a?(klass), "assigned [#{@symbol}] is not a [#{klass}]"
-    end
-    
-    def should_be(expected_value)
-      assert_equal expected_value, assigns(@symbol)
-    end
-  end
-  
-  # Email
-  
-  class EmailAssertion < Assertion
+  class EmailAssertion < ShouldB::Assertion
     def initialize(expectations)
       if ActionMailer::Base.deliveries.size < 1
         flunk 'No emails have been sent'
@@ -86,5 +47,4 @@ module ShouldB
       end
     end
   end
-  
 end
