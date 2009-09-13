@@ -1,151 +1,205 @@
-ShouldB
-=======
+= ShouldB
 
-An alternative Rails testing framework which extends
-Test::Unit with some useful helper methods covering common scenarios.
+== A Rails testing framework with a railsy syntax
 
-It has a nice clear syntax that looks pretty
-and reads as plain English.
+If you using Test Driven Development (TDD),
+and you, test first...
+and you want nice test failures along the way...
 
-Use it with the factory pattern and testing becomes a pleasure.
+Give it a whirl
 
-If you are not too sure about creating your own factory module,
-or how to include it into your tests,
-use the Fixture replacement plugin.
+== Install
+* Use braid to install, if you don't have it.
+      sudo gem install braid
 
+* Then
 
-Install
-=======
+      braid add git://github.com/brentgreeff/should_b.git -p
 
-Use braid to install, its great.
-braid add git://github.com/brentgreeff/should_b.git -p
+* add a setup line to 'test/test_helper.rb'
 
-add a setup line to 'test/test_helper.rb'
-link so:
+      class ActiveSupport::TestCase
+        setup :should_b
+      end
 
-class ActiveSupport::TestCase
-  setup :should_b
-end
-
-Unit Examples
-=============
-@company = create_company (create_company needs to return a valid instance)
-
-@company.should_require_a :name, 'please enter the name'
-@company.should_require_an :address, 'please enter the address'
-
-# company should not allow creative accounting
-@company.creative_accounting = true
-@company.should_have_invalid :books, 'no creative accounting please'
-
-# company does not require telephone_no if address present
-@company.address = an_address
-@company.should_not_require_a :telephone_no
-
-Random Characters
-=================
-
-@company.name = 81.random_characters
-@company.should_have_invalid :name, 'max is 80'
+Done!
 
 
-Functional Examples
-===================
-
-get :new
-should :render => 'something/new'
-
-# 
-
-get :show, :id => 'does not exist'
-should :respond => 'not_found'
-
-# 
-
-get :new
-should :assign_new => Something
-
-# 
-
-get :edit, :id => something.id
-assigned(Something).should_be something
-
-# 
-
-get :new
-should :redirect_to => '/login'
-
-#
-
-post :create, :something => attrib
-flashed(:notice).should_be 'Yay, Something created!'
-
-# 
-
-post :create, :something => attrib
-
-should :send_email => {
-  :from => 'me@example.com',
-  :to => 'you@example.com',
-  :containing => "something awesome"
-}
-
-# 
-
-should :create => Something do
-  post :create, :something => attrib
-end
-
-# 
-
-should :delete => Something do
-  put :destroy, :id => something.id
-end
-
-# 
-
-should_not :delete => Something do
-  put :destroy, :id => something.id
-end
-
-# 
-
-should_not :create => Something do
-  post :create, :something => attrib
-end
+== For extra flavour, add:
+  * should_pricot (Hpricot matchers in Test::Unit)
+  * the factory pattern
+  * contexts plugin
+  * matchy
 
 
-Helpers
-=======
+== Unit Tests
+
+* Use a factory plugin or create your own factory module.
+* Start off with a valid instance
+
+      def setup
+        @company = create_company
+      end
+
+      test "should require a name" do
+        @company.should_require_a :name, 'please enter the name'
+      end
+
+      test "should require an address" do
+        @company.should_require_an :address, 'please enter the address'
+      end
+      
+      test "should not allow creative accounting" do
+        @company.creative_accounting = true
+        @company.should_have_invalid :books, 'no creative accounting please'
+      end
+      
+      test "company does not require a telephone no if an address is present" do
+        @company.address = an_address
+        @company.should_not_require_a :telephone_no
+      end
+
+
+== Functional Tests
+      
+      test "should show the place my order page" do
+        get :new
+        should :render => 'orders/new'
+      end
+      
+      test "should return the not found page when the id does not exist" do
+        get :show, :id => 'does not exist'
+        should :respond => 'not_found'
+      end
+      
+      test "should assign a new order" do
+        get :new
+        should :assign_new => Order
+      end
+      
+      test "should assign the order from the id passed in url" do
+        get :edit, :id => @order.id
+        assigned(Order).should_be @order
+      end
+      
+      test "should associate the current user as the editor" do
+        user = create_user
+        login_as user
+        put :update, :id => @article.id
+        assigned(Article).editor.should_be user
+      end
+      
+      test "you can chain these as long as you like to" do
+        assigned(Article).editor.first_name.should_be 'pete'
+      end
+
+* If you pass a Class, you get type checking
+* If you pass a Symbol its just a value based assertion.
+
+      test "should assign a flag if someone logged in" do
+        login_as @someone
+        get :index
+        assigned(:flag).should_be 'Yes'
+      end
+      
+      test "should go to the login page if not logged in" do
+        logout
+        get :new
+        should :redirect_to => '/login'
+      end
+      
+      test "should notify the user when order was created" do
+        post :create, :order => attrib
+        flashed(:notice).should_be 'Yay, Order created!'
+      end
+      
+      test "should send notifiction email when creating an order" do
+        post :create, :order => attrib
+        
+        should :send_email => {
+          :from => 'me@example.com',
+          :to => 'you@example.com',
+          :subject => 'Your order',
+          :containing => "#{@order_number}"
+        }
+      end
+      
+      # You can use: should :send_email in Unit test too.
+      
+      test "should not send notifiction email when order failed" do
+        should_not :send_email do
+          post :create, :order => missing_attrib(:cc_no)
+        end
+      end
+      
+      test "should create an order" do
+        should :create => Order do
+          post :create, :order => attrib
+        end
+      end
+      
+      test "should delete an order" do
+        should :delete => Order do
+          put :destroy, :id => order.id
+        end
+      end
+      
+      test "should not delete an order if not owner" do
+        login_as someone_random
+        
+        should_not :delete => Order do
+          put :destroy, :id => order.id
+        end
+      end
+      
+      test "should not create order if not logged in" do
+        logout
+        
+        should_not :create => Order do
+          post :create, :order => attrib
+        end
+      end
+
+
+== Random Characters
+
+* Just plain handy
+
+      @company.name = 81.random_characters
+      @company.should_have_invalid :name, 'max is 80'
+
+
+== Helpers
 
 There are also some helpers for manipulating attributes.
 
 I tend to define an attrib method in my funtional tests
 to represent valid attributes passed to create or update a resource.
 
-eg:
+* eg:
 
-def attrib
-  {
-    :first_name => 'Jim',
-    :last_name => 'Bean'
-  }
-end
+      def attrib
+        {
+          :first_name => 'Jim',
+          :last_name => 'Bean'
+        }
+      end
 
 Sometimes you want to tests different values, especially invalid ones,
-to get away from all the merge noise, I have defined helpers:
+to get away from all the merge noise, I have defined these helpers:
 
-  missing_attrib
-  blank_attrib
-  replace_attrib
-  add_attrib
+      missing_attrib
+      blank_attrib
+      replace_attrib
+      add_attrib
 
-Means you can write tests like the following:
 
-should_not :create => Something do
-  post :create, :something => blank_attrib(:first_name)
-end
-should :render => 'somethings/new'
+* Means you can write tests like the following:
+      
+      should_not :create => Order do
+        post :create, :something => blank_attrib(:cc_no)
+      end
+      should :render => 'orders/new'
 
 
 Copyright (c) 2009 [Brent Greeff], released under the MIT license
