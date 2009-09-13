@@ -1,13 +1,21 @@
 module ShouldB
   class AssignedAssertion
-    def initialize(klass)
-      @klass = klass
-      @symbol = get_symbol
+    def initialize(klass_or_symbol)
+      if klass_or_symbol.is_a? Symbol
+        @symbol = klass_or_symbol
+      else
+        @klass = klass_or_symbol
+        @symbol = get_symbol_from_klass
+      end
+      
       @test = ShouldB.test_instance
       @assigned = @test.assigns(@symbol)
       
       @test.assert_not_nil @assigned, "No [#{@symbol}] assigned"
-      @test.assert @assigned.is_a?(klass), type_safety_failed_msg
+      
+      if @klass
+        @test.assert @assigned.is_a?(@klass), type_safety_failed_msg
+      end
     end
     
     def should_be(expected_value)
@@ -20,7 +28,7 @@ module ShouldB
       RecursiveAssertion.new(@assigned, method)
     end
     
-    def get_symbol
+    def get_symbol_from_klass
       @klass.to_s.tableize.singularize.to_sym
     end
     
