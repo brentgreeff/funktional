@@ -32,6 +32,22 @@ module ShouldB
       assert_message(field, expected_error_message) if expected_error_message
     end
     
+    def should_allow_mass_assignment(field, valid)
+      check_test_instance!
+      saved_existing_value = self.send field
+      
+      self.send "attributes=", {field.to_sym => valid}
+      ShouldB.test_instance.assert_not_equal saved_existing_value, self.send(field)
+    end
+    
+    def should_not_allow_mass_assignment(field, valid)
+      check_test_instance!
+      saved_existing_value = self.send field
+      
+      self.send "attributes=", {field.to_sym => valid}
+      ShouldB.test_instance.assert_equal saved_existing_value, self.send(field)
+    end
+    
     private
     
     def assign_nil_to(field, expected_error_message = nil)
