@@ -32,17 +32,24 @@ module ShouldB
       assert_message(field, expected_error_message) if expected_error_message
     end
     
-    def should_allow_mass_assignment(*fields)
+    def should_mass_assign(*fields)
       check_test_instance!
       fields.each do |field|
         ShouldB.test_instance.assert self.class.accessible_attributes.include?(field.to_s)
       end
     end
     
-    def should_not_allow_mass_assignment(*fields)
+    def should_not_mass_assign(*fields)
       check_test_instance!
       fields.each do |field|
         ShouldB.test_instance.deny self.class.accessible_attributes.include?(field.to_s)
+      end
+    end
+    
+    def should_protect(*fields)
+      check_test_instance!
+      fields.each do |field|
+        ShouldB.test_instance.assert self.class.protected_attributes.include?(field.to_s)
       end
     end
     
