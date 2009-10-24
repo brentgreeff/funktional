@@ -41,8 +41,19 @@ module ShouldB
     
     def should_not_mass_assign(*fields)
       check_test_instance!
-      fields.each do |field|
-        ShouldB.test_instance.deny self.class.accessible_attributes.include?(field.to_s)
+      accessible_attrib = self.class.accessible_attributes.to_a
+      protected_attrib = self.class.protected_attributes.to_a
+      fields = fields.map(&:to_s)
+      
+      if accessible_attrib.any?
+        common_fields = (accessible_attrib & fields)
+        @test.assert((common_fields.size == 0), "#{common_fields.inspect} marked accessible")
+      elsif protected_attrib.any?
+        common_fields = (protected_attrib & fields)
+        difference = (fields - protected_attrib)
+        @test.assert((common_fields.size == fields.size), "#{difference.inspect} not protected")
+      else
+        @test.flunk "#{fields.inspect} not protected"
       end
     end
     
@@ -91,6 +102,7 @@ module ShouldB
       if ShouldB.test_instance.nil?
         raise ShouldB::Setup::Error, 'Did you forget to (setup :should_b) in test/test_helper?'
       end
+      @test = ShouldB.test_instance
     end
   end
 end
