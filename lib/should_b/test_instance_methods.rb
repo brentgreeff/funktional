@@ -44,6 +44,11 @@ module ShouldB
       assert_template template
     end
     
+    def should_render_404(template = 'public/404')
+      assert_response :not_found
+      assert_template template
+    end
+    
     def should_assign_new(klass_or_symbol)
       if klass_or_symbol.is_a? Symbol
         symbol = klass_or_symbol

@@ -70,6 +70,12 @@ Done!
       test "should return the not found page when the id does not exist" do
         get :show, :id => 'does not exist'
         should :respond => 'not_found'
+        # This asserts for the public/404 template
+      end
+      
+      test "should return the not found page when the id does not exist" do
+        get :show, :id => 'something does not exist'
+        should :render_404 => 'somethings/not_found'
       end
       
       test "should assign a new order" do
