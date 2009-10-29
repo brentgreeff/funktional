@@ -1,5 +1,5 @@
 module ShouldB
-  module IntegerExtensions
+  module RandomCharacters
     def random_characters
       chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
       str = ''
