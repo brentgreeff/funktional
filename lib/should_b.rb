@@ -9,11 +9,9 @@ require 'should_b/flashed_assertion'
 require 'should_b/model_assertions'
 
 require 'should_b/attribute_test_helper'
-require 'should_b/random_characters'
 require 'should_b/setup'
 
 ActiveRecord::Base.send(:include, ShouldB::ModelAssertions)
 ActiveSupport::TestCase.send(:include, ShouldB::TestInstanceMethods)
 ActiveSupport::TestCase.send(:include, ShouldB::AttributeTestHelper)
 ActiveSupport::TestCase.send(:include, ShouldB::Setup)
-Integer.send(:include, ShouldB::RandomCharacters)
