@@ -147,7 +147,7 @@ The default 'should :render' checks for a http status code of 200
 
 * This checks the object assigned is of the correct type.
 
-=== Testing the attributes of a assigned object.
+=== Testing the attributes of an assigned object.
 
       test "should associate the current user as the editor" do
         login_as @user = create_user
