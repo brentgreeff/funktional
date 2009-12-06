@@ -1,4 +1,4 @@
-module ShouldB
+module Funktional
   module RandomCharacters
     def random_characters
       chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'

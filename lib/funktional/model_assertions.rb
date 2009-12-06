@@ -1,4 +1,4 @@
-module ShouldB
+module Funktional
   module ModelAssertions
     def should_require_a(field, expected_error_message = nil)
       check_test_instance!
@@ -35,7 +35,7 @@ module ShouldB
     def should_mass_assign(*fields)
       check_test_instance!
       fields.each do |field|
-        ShouldB.test_instance.assert self.class.accessible_attributes.include?(field.to_s)
+        Funktional.test_instance.assert self.class.accessible_attributes.include?(field.to_s)
       end
     end
     
@@ -60,7 +60,7 @@ module ShouldB
     def should_protect(*fields)
       check_test_instance!
       fields.each do |field|
-        ShouldB.test_instance.assert self.class.protected_attributes.include?(field.to_s)
+        Funktional.test_instance.assert self.class.protected_attributes.include?(field.to_s)
       end
     end
     
@@ -80,29 +80,29 @@ module ShouldB
     end
     
     def assert_invalid(message)
-      ShouldB.test_instance.assert self.invalid?, message
+      Funktional.test_instance.assert self.invalid?, message
     end
     
     def assert_valid
-      ShouldB.test_instance.assert self.valid?
+      Funktional.test_instance.assert self.valid?
     end
     
     def assert_message(field, expected_error_message)
-      ShouldB.test_instance.assert_equal(expected_error_message, self.errors[field])
+      Funktional.test_instance.assert_equal(expected_error_message, self.errors[field])
     end
     
     def must_be_valid_before_test!
       if self.invalid?
-        error = "ShouldB requires a valid instance of #{self.class.name}"
-        ShouldB.test_instance.flunk error
+        error = "Funktional requires a valid instance of #{self.class.name}"
+        Funktional.test_instance.flunk error
       end
     end
     
     def check_test_instance!
-      if ShouldB.test_instance.nil?
-        raise ShouldB::Setup::Error, 'Did you forget to (setup :should_b) in test/test_helper?'
+      if Funktional.test_instance.nil?
+        raise Funktional::Setup::Error, 'Did you forget to (setup :funktional) in test/test_helper?'
       end
-      @test = ShouldB.test_instance
+      @test = Funktional.test_instance
     end
   end
 end

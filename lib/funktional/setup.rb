@@ -1,9 +1,9 @@
-module ShouldB
+module Funktional
   mattr_accessor :test_instance
   
   module Setup
-    def should_b
-      ShouldB.test_instance = self
+    def funktional
+      Funktional.test_instance = self
     end
     
     class Error < RuntimeError; end

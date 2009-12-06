@@ -1,4 +1,4 @@
-module ShouldB
+module Funktional
   module AttributeTestHelper
     
     def missing_attrib(to_remove)
@@ -23,6 +23,5 @@ module ShouldB
     def add_attrib(addition)
       attrib.merge(addition)
     end
-    
   end
 end

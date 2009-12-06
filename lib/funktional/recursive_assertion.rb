@@ -1,7 +1,7 @@
-module ShouldB
-  class RecursiveAssertion < ShouldB::Assertion
+module Funktional
+  class RecursiveAssertion < Funktional::Assertion
     def initialize(assigned, method)
-      @test = ShouldB.test_instance
+      @test = Funktional.test_instance
       @assigned = assigned
       @method = method
       

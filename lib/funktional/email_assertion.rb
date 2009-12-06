@@ -1,5 +1,5 @@
-module ShouldB
-  class EmailAssertion < ShouldB::Assertion
+module Funktional
+  class EmailAssertion < Funktional::Assertion
     def initialize(expectations)
       if ActionMailer::Base.deliveries.size < 1
         flunk 'No emails have been sent'

@@ -1,5 +1,5 @@
-module ShouldB
-  class FlashedAssertion < ShouldB::Assertion
+module Funktional
+  class FlashedAssertion < Funktional::Assertion
     def initialize(symbol)
       @symbol = symbol
     end

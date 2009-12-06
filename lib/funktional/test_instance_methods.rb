@@ -1,4 +1,4 @@
-module ShouldB
+module Funktional
   
   module TestInstanceMethods
     def should(params, &block)

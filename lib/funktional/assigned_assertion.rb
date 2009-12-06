@@ -1,4 +1,4 @@
-module ShouldB
+module Funktional
   class AssignedAssertion
     def initialize(klass_or_symbol)
       if klass_or_symbol.is_a? Symbol
@@ -8,7 +8,7 @@ module ShouldB
         @symbol = get_symbol_from_klass
       end
       
-      @test = ShouldB.test_instance
+      @test = Funktional.test_instance
       @assigned = @test.assigns(@symbol)
       
       @test.assert_not_nil @assigned, "No [#{@symbol}] assigned"
