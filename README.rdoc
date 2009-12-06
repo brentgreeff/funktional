@@ -1,12 +1,6 @@
-= ShouldB
+= Funktional
 
 == A Rails testing framework with a railsy syntax
-
-If you using Test Driven Development (TDD),
-and you, test first...
-and you want nice test failures along the way...
-
-Give it a whirl
 
 == Install
 * Use braid to install, if you don't have it.
@@ -14,12 +8,12 @@ Give it a whirl
 
 * Then
 
-      braid add git://github.com/brentgreeff/should_b.git -p
+      braid add git://github.com/brentgreeff/funktional.git -p
 
 * add a setup line to 'test/test_helper.rb'
 
       class ActiveSupport::TestCase
-        setup :should_b
+        setup :funktional
       end
 
 Done!
@@ -27,24 +21,25 @@ Done!
 
 == For extra flavour, add:
   * should_pricot (Hpricot matchers in Test::Unit)
-  * the factory pattern
+  * hash_factory (Super simple factories for your tests)
   * contexts plugin
-  * matchy
+  * matchy (RSpec matchers in Test::Unit)
 
 
-== Unit Tests
+== Unit tests
 
-* Use a factory plugin or create your own factory module.
+=== Define domain logic through validations.
+
 * Start off with a valid instance
 
       def setup
         @company = create_company
       end
-
+      
       test "should require a name" do
         @company.should_require_a :name, 'please enter the name'
       end
-
+      
       test "should require an address" do
         @company.should_require_an :address, 'please enter the address'
       end
@@ -59,113 +54,120 @@ Done!
         @company.should_not_require_a :telephone_no
       end
 
+=== Email
 
-== Functional Tests
+      test "should send email" do
+        should :send_email => {
+          :from => 'me@example.com',
+          :to => 'you@example.com',
+          :subject => 'Your order',
+          :containing => "important info"
+        }
+      end
       
+      test "should not send email" do
+        should_not :send_email do
+          # do something here
+        end
+      end
+
+=== Object creation
+
+      test "should create something" do
+        should :create => Something do
+          # Do something
+        end
+      end
+      
+      test "should delete something" do
+        should :delete => Something do
+          # Do something
+        end
+      end
+      
+      test "should not delete something" do
+        should_not :delete => Something do
+          # Do something
+        end
+      end
+      
+      test "should not create something" do
+        should_not :create => Something do
+          # Do something
+        end
+      end
+
+
+== Testing Controllers
+
+=== Render
+
       test "should show the place my order page" do
         get :new
         should :render => 'orders/new'
       end
-      
-      test "should return the not found page when the id does not exist" do
-        get :show, :id => 'does not exist'
-        should :respond => 'not_found'
-        # This asserts for the public/404 template
-      end
+
+The default 'should :render' checks for a http status code of 200
+
+* What about other codes?
       
       test "should return the not found page when the id does not exist" do
         get :show, :id => 'something does not exist'
-        should :render_404 => 'somethings/not_found'
+        should :render_404 => 'public/404'
       end
-      
+
+=== Redirection
+
+      test "should go to the login page if not logged in" do
+        logout
+        get :new
+        should :redirect_to => '/login'
+      end
+
+==== Initializing a new object
+
       test "should assign a new order" do
         get :new
         should :assign_new => Order
       end
-      
-      test "should assign the order from the id passed in url" do
+
+=== Loading Objects
+
+      test "should load order by id" do
         get :edit, :id => @order.id
         assigned(Order).should_be @order
       end
-      
+
+* This checks the object assigned is of the correct type.
+
+=== Testing the attributes of a assigned object.
+
       test "should associate the current user as the editor" do
-        user = create_user
-        login_as user
+        login_as @user = create_user
         put :update, :id => @article.id
-        assigned(Article).editor.should_be user
+        
+        assigned(Article).editor.should_be @user
       end
       
-      test "you can chain these as long as you like to" do
+      test "you can chain these as long as you like" do
         assigned(Article).editor.first_name.should_be 'pete'
       end
 
 * If you pass a Class, you get type checking
 * If you pass a Symbol its just a value based assertion.
 
-      test "should assign a flag if someone logged in" do
-        login_as @someone
+      test "should load a collection" do
         get :index
-        assigned(:flag).should_be 'Yes'
+        assigned(:records).should_be [@record_1, @record_2]
       end
-      
-      test "should go to the login page if not logged in" do
-        logout
-        get :new
-        should :redirect_to => '/login'
-      end
-      
+
+=== Flash messages
+
       test "should notify the user when order was created" do
         post :create, :order => attrib
         flashed(:notice).should_be 'Yay, Order created!'
       end
       
-      test "should send notifiction email when creating an order" do
-        post :create, :order => attrib
-        
-        should :send_email => {
-          :from => 'me@example.com',
-          :to => 'you@example.com',
-          :subject => 'Your order',
-          :containing => "#{@order_number}"
-        }
-      end
-      
-      # You can use: should :send_email in Unit test too.
-      
-      test "should not send notifiction email when order failed" do
-        should_not :send_email do
-          post :create, :order => missing_attrib(:cc_no)
-        end
-      end
-      
-      test "should create an order" do
-        should :create => Order do
-          post :create, :order => attrib
-        end
-      end
-      
-      test "should delete an order" do
-        should :delete => Order do
-          put :destroy, :id => order.id
-        end
-      end
-      
-      test "should not delete an order if not owner" do
-        login_as someone_random
-        
-        should_not :delete => Order do
-          put :destroy, :id => order.id
-        end
-      end
-      
-      test "should not create order if not logged in" do
-        logout
-        
-        should_not :create => Order do
-          post :create, :order => attrib
-        end
-      end
-
 
 == Random Characters
 
@@ -175,7 +177,7 @@ Done!
       @company.should_have_invalid :name, 'max is 80'
 
 
-== Helpers
+== Controller Helpers
 
 There are also some helpers for manipulating attributes.
 
