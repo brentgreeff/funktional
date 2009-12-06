@@ -54,6 +54,13 @@ Done!
         @company.should_not_require_a :telephone_no
       end
 
+* Random Characters
+      
+      test "company name cannot be longer than 80 characters" do
+        @company.name = 81.random_characters
+        @company.should_have_invalid :name, 'max is 80'
+      end
+
 === Email
 
       test "should send email" do
@@ -102,7 +109,7 @@ Done!
 
 === Render
 
-      test "should show the place my order page" do
+      test "should show the new order page" do
         get :new
         should :render => 'orders/new'
       end
@@ -124,7 +131,7 @@ The default 'should :render' checks for a http status code of 200
         should :redirect_to => '/login'
       end
 
-==== Initializing a new object
+=== Initializing a new object
 
       test "should assign a new order" do
         get :new
@@ -153,7 +160,6 @@ The default 'should :render' checks for a http status code of 200
         assigned(Article).editor.first_name.should_be 'pete'
       end
 
-* If you pass a Class, you get type checking
 * If you pass a Symbol its just a value based assertion.
 
       test "should load a collection" do
@@ -167,14 +173,6 @@ The default 'should :render' checks for a http status code of 200
         post :create, :order => attrib
         flashed(:notice).should_be 'Yay, Order created!'
       end
-      
-
-== Random Characters
-
-* Just plain handy
-
-      @company.name = 81.random_characters
-      @company.should_have_invalid :name, 'max is 80'
 
 
 == Controller Helpers
