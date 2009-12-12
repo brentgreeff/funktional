@@ -36,6 +36,10 @@ Done!
         @company = create_company
       end
       
+      test "should respond to fax no" do
+        @company.should_respond_to :fax_no
+      end
+      
       test "should require a name" do
         @company.should_require_a :name, 'please enter the name'
       end

@@ -9,6 +9,8 @@ module Funktional
       end
     end
     
+    alias :should_require_an :should_require_a
+    
     def should_not_require_a(field)
       check_test_instance!
       
@@ -17,13 +19,7 @@ module Funktional
       end
     end
     
-    def should_require_an(field, expected_error_message = nil)
-      should_require_a(field, expected_error_message)
-    end
-    
-    def should_not_require_an(field)
-      should_not_require_a(field)
-    end
+    alias :should_not_require_an :should_not_require_a
     
     def should_have_invalid(field, expected_error_message = nil)
       check_test_instance!
@@ -62,6 +58,10 @@ module Funktional
       fields.each do |field|
         Funktional.test_instance.assert self.class.protected_attributes.include?(field.to_s)
       end
+    end
+    
+    def should_respond_to(method)
+      Funktional.test_instance.assert_respond_to self, method
     end
     
     private
