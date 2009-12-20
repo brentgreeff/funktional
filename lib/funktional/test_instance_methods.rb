@@ -40,13 +40,17 @@ module Funktional
     end
     
     def should_render(template)
-      assert_response :success
-      assert_template template
+      _wrap_assertion do
+        assert_response :success
+        assert_template template
+      end
     end
     
     def should_render_404(template = 'public/404')
-      assert_response :not_found
-      assert_template template
+      _wrap_assertion do
+        assert_response :not_found
+        assert_template template
+      end
     end
     
     def should_assign_new(klass_or_symbol)
@@ -66,8 +70,10 @@ module Funktional
     end
     
     def should_redirect_to(uri)
-      assert_response :redirect
-      assert_redirected_to uri
+      _wrap_assertion do
+        assert_response :redirect
+        assert_redirected_to uri
+      end
     end
     
     def should_respond(expected_response)
