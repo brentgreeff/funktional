@@ -1,4 +1,6 @@
 require 'test_help'
+
+require 'funktional/route_checker'
 require 'funktional/test_instance_methods'
 
 require 'funktional/assertion'

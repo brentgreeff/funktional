@@ -28,6 +28,13 @@ module Funktional
     
     private
     
+    def should_route(url, &blk)
+      _wrap_assertion do
+        route = RouteChecker.build(&blk)
+        assert_routing(url, route.get_params)
+      end
+    end
+    
     def should_send_email(details)
       EmailAssertion.new(details)
     end

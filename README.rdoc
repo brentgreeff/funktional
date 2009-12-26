@@ -111,6 +111,13 @@ Done!
 
 == Testing Controllers
 
+=== Routing
+
+      should :route => '/onions/new' do
+        controller 'onions'
+        action 'new'
+      end
+
 === Render
 
       test "should show the new order page" do
