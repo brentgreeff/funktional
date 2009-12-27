@@ -1,39 +1,44 @@
 module Funktional
   
   class RouteChecker
+    attr_reader :path_and_method, :controller_action_etc
     
-    def initialize
-      @params = []
+    def initialize(params)
+      @path_and_method = get_path_and_method(params)
+      @controller_action_etc = {}
     end
     
     def controller(value)
-      @params << [:controller, value]
+      @controller_action_etc[:controller] = value
     end
     
     def action(value)
-      @params << [:action, value]
+      @controller_action_etc[:action] = value
     end
     
-    def get_params
-      p = {}
-      
-      for mapping in @params
-        p[mapping.first] = mapping.last
+    def get_path_and_method(params)
+      if params.is_a? Hash
+        {
+          :path => params[:route],
+          :method => params[:method].to_sym
+        }
+      else
+        {
+          :path => params,
+          :method => :get
+        }
       end
-      return p
     end
     
     def to_s
-      param_strings = []
+      path = @path_and_method[:path]
+      method = @path_and_method[:method]
       
-      for mapping in @params
-        param_strings << ":#{mapping.first} => '#{mapping.last}'"
-      end
-      return param_strings.join(', ')
+      "route '#{path}' :method '#{method}' to #{@controller_action_etc.inspect}"
     end
     
-    def self.build(&blk)
-      checker = self.new
+    def self.build(params, &blk)
+      checker = self.new(params)
       
       checker.instance_eval(&blk)
       return checker

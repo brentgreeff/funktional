@@ -118,6 +118,13 @@ Done!
         action 'new'
       end
 
+* you need to pass the method if its not a :get request
+
+      should :route => '/onions', :method => :post do
+        controller 'onions'
+        action 'create'
+      end
+
 === Render
 
       test "should show the new order page" do

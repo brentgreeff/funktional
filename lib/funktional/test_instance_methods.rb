@@ -3,7 +3,8 @@ module Funktional
   module TestInstanceMethods
     def should(params, &block)
       method = "should_#{params.keys.first}".to_sym
-      args = params.values.first
+      args = (params.length > 1) ? params : params.values.first
+      
       self.send method, args, &block
     end
     
@@ -28,12 +29,14 @@ module Funktional
     
     private
     
-    def should_route(url, &blk)
+    def should_route(params, &blk)
       _wrap_assertion do
-        route = RouteChecker.build(&blk)
-        assert_routing(url, route.get_params)
+        route = RouteChecker.build(params, &blk)
+        assert_routing(route.path_and_method, route.controller_action_etc)
       end
     end
+    
+    alias :should_method :should_route
     
     def should_send_email(details)
       EmailAssertion.new(details)
