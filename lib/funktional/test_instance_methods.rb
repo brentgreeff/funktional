@@ -31,8 +31,8 @@ module Funktional
     
     def should_route(params, &blk)
       _wrap_assertion do
-        route = RouteChecker.build(params, &blk)
-        assert_routing(route.path_and_method, route.controller_action_etc)
+        checker = RouteChecker.build(params, &blk)
+        assert_routing(checker.__path_and_method, checker.__controller_action_etc)
       end
     end
     
