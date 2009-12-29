@@ -3,7 +3,7 @@ module Funktional
     instance_methods.each { |m| undef_method m unless m =~ /^__/ }
   end
   
-  class RouteChecker
+  class RouteChecker < BlankSlate
     attr_reader :__path_and_method, :__controller_action_etc
     
     def self.build(params, &blk)
