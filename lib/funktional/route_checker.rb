@@ -1,9 +1,10 @@
 module Funktional
-  class BlankSlate
-    instance_methods.each { |m| undef_method m unless m =~ /^__/ or m.eql?('instance_eval') }
-  end
   
-  class RouteChecker < BlankSlate
+  class RouteChecker
+    instance_methods.each do |method|
+      undef_method(method) unless %w(__send__ __id__ instance_eval).include?(method)
+    end
+    
     attr_reader :__path_and_method, :__controller_action_etc
     
     def self.build(params, &blk)
@@ -22,7 +23,7 @@ module Funktional
       path = @__path_and_method[:path]
       method = @__path_and_method[:method]
       
-      "route '#{path}' :method '#{method}' to #{@controller_action_etc.inspect}"
+      "route '#{path}' :method '#{method}' to #{@__controller_action_etc.inspect}"
     end
     
     def method_missing(method_name, value)
