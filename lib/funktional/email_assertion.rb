@@ -40,10 +40,10 @@ module Funktional
     def check_containing(should_contain, body)
       if should_contain.is_a? Array
         should_contain.each do |should_i|
-          assert_match /#{should_i}/, body
+          assert_match /#{Regexp.escape(should_i)}/, body
         end
       else
-        assert_match /#{should_contain}/, body
+        assert_match /#{Regexp.escape(should_contain)}/, body
       end
     end
   end
