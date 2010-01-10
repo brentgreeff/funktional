@@ -29,21 +29,21 @@ Done!
 
 Contexts, Don't Repeat Yourself, share common setup steps between your tests.
 
-context "On a hot summer day" do
-  before { day :hot }
-  
-  context "in the middle of July" do
-    before { Time.now = 'July 15' }
-    
-    should "be on the beach" do
-      assert_equal 'beach', @me.location
-    end
-    
-    should "be drinking lemonade" do
-      assert_equal 'lemonade', @me.drinking
-    end
-  end
-end
+      context "On a hot summer day" do
+        before { day :hot }
+        
+        context "in the middle of July" do
+          before { Time.now = 'July 15' }
+          
+          should "be on the beach" do
+            assert_equal 'beach', @me.location
+          end
+          
+          should "be drinking lemonade" do
+            assert_equal 'lemonade', @me.drinking
+          end
+        end
+      end
 
 
 == Unit tests
