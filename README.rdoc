@@ -76,18 +76,18 @@ Contexts, Don't Repeat Yourself, share common setup steps between your tests.
           @company.address = an_address
           @company.should_not_require_a :telephone_no
         end
+        
+        should "not have a name longer than 80 characters" do
+          @company.name = 81.random_characters
+          @company.should_have_invalid :name, 'max is 80'
+          # random_characters is a small useful helper method.
+        end
       end
 
-* Random Characters
-      
-      test "company name cannot be longer than 80 characters" do
-        @company.name = 81.random_characters
-        @company.should_have_invalid :name, 'max is 80'
-      end
 
 === Email
 
-      test "should send email" do
+      should "send email" do
         should :send_email => {
           :from => 'me@example.com',
           :to => 'you@example.com',
@@ -96,7 +96,7 @@ Contexts, Don't Repeat Yourself, share common setup steps between your tests.
         }
       end
       
-      test "should not send email" do
+      should "not send email" do
         should_not :send_email do
           # do something here
         end
@@ -104,25 +104,25 @@ Contexts, Don't Repeat Yourself, share common setup steps between your tests.
 
 === Object creation
 
-      test "should create something" do
+      should "create something" do
         should :create => Something do
           # Do something
         end
       end
       
-      test "should delete something" do
+      should "delete something" do
         should :delete => Something do
           # Do something
         end
       end
       
-      test "should not delete something" do
+      should "not delete something" do
         should_not :delete => Something do
           # Do something
         end
       end
       
-      test "should not create something" do
+      should "not create something" do
         should_not :create => Something do
           # Do something
         end
