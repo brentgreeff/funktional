@@ -22,8 +22,28 @@ Done!
 == For extra flavour, add:
   * should_pricot (Hpricot matchers in Test::Unit)
   * hash_factory (Super simple factories for your tests)
-  * contexts plugin
   * matchy (RSpec matchers in Test::Unit)
+
+
+== Contexts
+
+Contexts, Don't Repeat Yourself, share common setup steps between your tests.
+
+context "On a hot summer day" do
+  before { day :hot }
+  
+  context "in the middle of July" do
+    before { Time.now = 'July 15' }
+    
+    should "be on the beach" do
+      assert_equal 'beach', @me.location
+    end
+    
+    should "be drinking lemonade" do
+      assert_equal 'lemonade', @me.drinking
+    end
+  end
+end
 
 
 == Unit tests
@@ -32,30 +52,30 @@ Done!
 
 * Start off with a valid instance
 
-      def setup
-        @company = create_company
-      end
-      
-      test "should respond to fax no" do
-        @company.should_respond_to :fax_no
-      end
-      
-      test "should require a name" do
-        @company.should_require_a :name, 'please enter the name'
-      end
-      
-      test "should require an address" do
-        @company.should_require_an :address, 'please enter the address'
-      end
-      
-      test "should not allow creative accounting" do
-        @company.creative_accounting = true
-        @company.should_have_invalid :books, 'no creative accounting please'
-      end
-      
-      test "company does not require a telephone no if an address is present" do
-        @company.address = an_address
-        @company.should_not_require_a :telephone_no
+      context "A Company" do
+        setup { @company = create_company }
+        
+        should "respond to fax no" do
+          @company.should_respond_to :fax_no
+        end
+        
+        should "require a name" do
+          @company.should_require_a :name, 'please enter the name'
+        end
+        
+        should "require an address" do
+          @company.should_require_an :address, 'please enter the address'
+        end
+        
+        should "not allow creative accounting" do
+          @company.creative_accounting = true
+          @company.should_have_invalid :books, 'no creative accounting please'
+        end
+        
+        should "not require a telephone no if an address is present" do
+          @company.address = an_address
+          @company.should_not_require_a :telephone_no
+        end
       end
 
 * Random Characters
@@ -127,7 +147,7 @@ Done!
 
 === Render
 
-      test "should show the new order page" do
+      should "show the new order page" do
         get :new
         should :render => 'orders/new'
       end
@@ -136,14 +156,14 @@ The default 'should :render' checks for a http status code of 200
 
 * What about other codes?
       
-      test "should return the not found page when the id does not exist" do
+      should "return the not found page when the id does not exist" do
         get :show, :id => 'something does not exist'
         should :render_404 => 'public/404'
       end
 
 === Redirection
 
-      test "should go to the login page if not logged in" do
+      should "go to the login page if not logged in" do
         logout
         get :new
         should :redirect_to => '/login'
@@ -151,14 +171,14 @@ The default 'should :render' checks for a http status code of 200
 
 === Initializing a new object
 
-      test "should assign a new order" do
+      should "assign a new order" do
         get :new
         should :assign_new => Order
       end
 
 === Loading Objects
 
-      test "should load order by id" do
+      should "load order by id" do
         get :edit, :id => @order.id
         assigned(Order).should_be @order
       end
@@ -167,27 +187,27 @@ The default 'should :render' checks for a http status code of 200
 
 === Testing the attributes of an assigned object.
 
-      test "should associate the current user as the editor" do
+      should "associate the current user as the editor" do
         login_as @user = create_user
         put :update, :id => @article.id
         
         assigned(Article).editor.should_be @user
       end
       
-      test "you can chain these as long as you like" do
+      should "chain as long as you like" do
         assigned(Article).editor.first_name.should_be 'pete'
       end
 
 * If you pass a Symbol its just a value based assertion.
 
-      test "should load a collection" do
+      should "load a collection" do
         get :index
         assigned(:records).should_be [@record_1, @record_2]
       end
 
 === Flash messages
 
-      test "should notify the user when order was created" do
+      should "notify the user when order was created" do
         post :create, :order => attrib
         flashed(:notice).should_be 'Yay, Order created!'
       end
@@ -224,6 +244,32 @@ to get away from all the merge noise, I have defined these helpers:
         post :create, :order => blank_attrib(:cc_no)
       end
       should :render => 'orders/new'
+
+
+== All funktional assertions are also available as class methods.
+
+context "When doing it all" do
+  before { :hit_a_controller }
+  
+  should :render => 'somethings/new'
+  
+  should :redirect_to '/somethings'
+  
+  element('h1').should_be 'Something'  (you need should_pricot for this one).
+  
+  flashed(:notice).should_be 'Cool'
+  
+  should :assign_new => Something
+  
+  assigned(Something).name.should_be 'something'
+  
+  should :create => Something
+  
+  should :send_email => {
+    :from => 'me@example.com',
+    :to => 'you@example.com'
+  }
+end
 
 
 Copyright (c) 2009 [Brent Greeff], released under the MIT license
