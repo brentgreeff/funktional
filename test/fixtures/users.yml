@@ -1,0 +1,5 @@
+fred:
+  name: fred
+  email: fred@funktional.com
+  phone: "01234567890"
+  age: 35
