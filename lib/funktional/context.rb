@@ -54,6 +54,13 @@ module Funktional
       return recorder
     end
     
+    def count(selector)
+      recorder = StackRecorder.new(selector)
+      self.should_blocks << CountShouldBlock.new(recorder, self)
+      
+      return recorder
+    end
+    
     def assigned(target)
       recorder = StackRecorder.new(target)
       self.should_blocks << AssignedShouldBlock.new(recorder, self)

@@ -257,6 +257,8 @@ to get away from all the merge noise, I have defined these helpers:
         
         element('h1').should_be 'Something'  (you need should_pricot for this one).
         
+        count('#friends ol.remaining').should_be 'Not Many'
+        
         flashed(:notice).should_be 'Cool'
         
         should :assign_new => Something
