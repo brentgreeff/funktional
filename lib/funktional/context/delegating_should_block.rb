@@ -11,6 +11,8 @@ module Funktional
       case options.keys.first
         when :render
           "render the [#{options[:render]}] template"
+        when :render_404
+          "render the [#{options[:render_404]}] template with a [404] status code"
         when :redirect_to
           "redirect to the [#{options[:redirect_to]}] url"
         when :assign_new
