@@ -7,6 +7,8 @@ module Funktional
       case options.keys.first
         when :create
           ShouldCreateBlock.new(options[:create], context)
+        when :delete
+          ShouldDeleteBlock.new(options[:delete], context)
         else
           DelegatingShouldBlock.new(options, context, &blk)
       end
