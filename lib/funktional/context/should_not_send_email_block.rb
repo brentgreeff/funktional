@@ -1,7 +1,7 @@
 module Funktional
   class ShouldNotSendEmailBlock < ShouldBlock
     
-    def initialize(klass, context)
+    def initialize(context)
       @context = context
       @should_name = "not send an email"
       
