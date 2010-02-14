@@ -8,8 +8,10 @@ module Funktional
           ShouldNotCreateBlock.new(options[:create], context)
         when :delete
           ShouldNotDeleteBlock.new(options[:delete], context)
+        when :send_email
+          ShouldNotSendEmailBlock.new(context)
         else
-          raise "Unknown assertion [should_not #{options.keys.first}]"
+          raise "Unknown assertion [should_not #{options.inspect}]"
       end
     end
   end

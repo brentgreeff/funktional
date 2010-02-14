@@ -277,6 +277,8 @@ to get away from all the merge noise, I have defined these helpers:
           :from => 'me@example.com',
           :to => 'you@example.com'
         }
+        
+        should_not :send_email
       end
 
 
