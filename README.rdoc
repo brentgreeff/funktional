@@ -269,6 +269,8 @@ to get away from all the merge noise, I have defined these helpers:
         
         should :delete => Something
         
+        should_not :create => Something
+        
         should :send_email => {
           :from => 'me@example.com',
           :to => 'you@example.com'

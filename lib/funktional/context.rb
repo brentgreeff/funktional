@@ -47,6 +47,10 @@ module Funktional
       self.should_blocks << ShouldBlock.build(options, self, &blk)
     end
     
+    def should_not(options, &blk)
+      self.should_blocks << ShouldNotBlock.build(options, self, &blk)
+    end
+    
     def element(selector)
       recorder = StackRecorder.new(selector)
       self.should_blocks << ElementShouldBlock.new(recorder, self)
