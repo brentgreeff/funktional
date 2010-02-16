@@ -257,7 +257,7 @@ to get away from all the merge noise, I have defined these helpers:
         
         should :render_404    # (defaults to 'public/404')
         
-        should :redirect_to '/somethings'
+        should :redirect_to => '/somethings'
         
         element('h1').should_be 'Something'   # (you need should_pricot for this one).
         
