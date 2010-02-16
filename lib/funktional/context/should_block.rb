@@ -4,6 +4,8 @@ module Funktional
     def self.build(options, context, &blk)
       return self.new(name = options, context, &blk) if options.is_a? String
       
+      options = {:render_404 => 'public/404'} if options == :render_404
+      
       case options.keys.first
         when :create
           ShouldCreateBlock.new(options[:create], context)

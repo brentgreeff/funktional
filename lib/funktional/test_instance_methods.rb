@@ -56,10 +56,17 @@ module Funktional
       end
     end
     
-    def should_render_404(template = 'public/404')
+    def should_render_404(expected_template = 'public/404')
       _wrap_assertion do
-        assert_response :not_found
-        assert_template template
+        actual_template = @response.rendered[:template].to_s
+        
+        if actual_template.blank?
+          msg = "redirected to [#{@response.redirected_to}]"
+        else
+          msg = "rendered template [#{actual_template}]"
+        end
+        assert_response :not_found, msg
+        assert_template expected_template
       end
     end
     

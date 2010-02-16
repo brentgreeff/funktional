@@ -253,11 +253,15 @@ to get away from all the merge noise, I have defined these helpers:
         
         should :render => 'somethings/new'
         
+        should :render_404 => 'public/404'
+        
+        should :render_404    # (defaults to 'public/404')
+        
         should :redirect_to '/somethings'
         
-        element('h1').should_be 'Something'  (you need should_pricot for this one).
+        element('h1').should_be 'Something'   # (you need should_pricot for this one).
         
-        count('#friends ol.remaining').should_be 'Not Many' (should_pricot here too)
+        count('#friends ol.remaining').should_be 'Not Many'   # (should_pricot here too)
         
         flashed(:notice).should_be 'Cool'
         
