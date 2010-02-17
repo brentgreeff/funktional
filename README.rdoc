@@ -27,6 +27,7 @@ Done!
 
 == Contexts
 
+
 Contexts, Don't Repeat Yourself, share common setup steps between your tests.
 
       context "On a hot summer day" do
