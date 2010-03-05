@@ -16,17 +16,18 @@ module Funktional
     end
     
     def __each_called
-      @__methods.each { |meth| yield [meth[:name], meth[:args]] }
+      @__methods.each { |meth| yield [meth[:name], meth[:args], meth[:block]] }
     end
     
     def __last_value
       @__methods.last[:args].first
     end
     
-    def method_missing(method_name, *args)
+    def method_missing(method_name, *args, &block)
       @__methods << {
         :name => method_name,
-        :args => args
+        :args => args,
+        :block => block
       }
       return self
     end
