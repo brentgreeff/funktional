@@ -47,6 +47,12 @@ class UsersControllerTest < ActionController::TestCase
       should_not :create => User
       assigned(User).name.should_be "demo"
     end
+    
+    context "deleting the user" do
+      before { delete :destroy, :id => @user.to_param }
+
+      should :delete => User
+    end
   end
   
   private

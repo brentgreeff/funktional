@@ -30,4 +30,11 @@ class UsersController < ApplicationController
     
     redirect_to users_url
   end
+  
+  def destroy
+    @user = User.find(params[:id])
+    
+    @user.destroy
+    redirect_to users_url
+  end
 end
