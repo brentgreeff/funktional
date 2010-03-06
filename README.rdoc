@@ -9,6 +9,10 @@
 * Then
 
       braid add git://github.com/brentgreeff/funktional.git -p
+      
+* Or via the gem
+
+      gem install funktional
 
 * add a setup line to 'test/test_helper.rb'
 
