@@ -10,7 +10,7 @@ module Funktional
         
         recorder.__each_called do |meth, args, block|
           if result.nil?
-            result = assigned(recorder.__target).send(meth, *args, &block.bind(self))
+            result = assigned(recorder.__target).send(meth, *args, &block)
           else
             result.send(meth, *args)
           end

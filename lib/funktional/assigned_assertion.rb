@@ -18,9 +18,9 @@ module Funktional
       end
     end
     
-    def should_be(expected_value=nil)
+    def should_be(expected_value=nil, &block)
       if block_given?
-        expected_value ||= yield
+        expected_value ||= block.bind(@test).call
       end
       
       @test.assert_equal expected_value, @assigned

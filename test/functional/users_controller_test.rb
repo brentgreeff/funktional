@@ -25,7 +25,13 @@ class UsersControllerTest < ActionController::TestCase
 
       should :render => :edit
       assigned(User).should_be { @user }
+    end
+    
+    context "updating the user" do
+      before { put :update, :id => @user.to_param, :user => replace_attrib(:name => "demo") }
+
       should_not :create => User
+      assigned(User).name.should_be "demo"
     end
   end
   

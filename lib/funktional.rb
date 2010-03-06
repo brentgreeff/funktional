@@ -6,6 +6,7 @@ require 'funktional/test_instance_methods'
 require 'funktional/test_class_methods'
 
 require 'funktional/assertion'
+require 'funktional/recursive_assertion'
 require 'funktional/assigned_assertion'
 require 'funktional/email_assertion'
 require 'funktional/flashed_assertion'
