@@ -270,6 +270,8 @@ to get away from all the merge noise, I have defined these helpers:
         
         assigned(Something).name.should_be 'something'
         
+        assigned(:something).should_be { @something }
+        
         should :create => Something
         
         should :delete => Something

@@ -3,6 +3,16 @@ require File.dirname(__FILE__) + '/../test_helper'
 class UsersControllerTest < ActionController::TestCase
   fixtures :all
   
+  context "viewing user index" do
+    before do 
+      @fred = users(:fred)
+      @bob = users(:bob)
+      get :index
+    end
+
+    assigned(:users).should_be { [@bob, @fred] }
+  end
+  
   context "Viewing a new user" do
     before { get :new }
 
@@ -25,6 +35,10 @@ class UsersControllerTest < ActionController::TestCase
 
       should :render => :edit
       assigned(User).should_be { @user }
+      
+      should "still be able to assign variable in instance version" do
+        assigned(User).should_be @user
+      end
     end
     
     context "updating the user" do
