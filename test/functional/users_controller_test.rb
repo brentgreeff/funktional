@@ -39,6 +39,8 @@ class UsersControllerTest < ActionController::TestCase
       should "still be able to assign variable in instance version" do
         assigned(User).should_be @user
       end
+      
+      assigned(User).name.should_be { @user.name }
     end
     
     context "updating the user" do
