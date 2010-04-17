@@ -3,16 +3,12 @@
 == A Rails testing framework with a railsy syntax
 
 == Install
-* Use braid to install, if you don't have it.
-      sudo gem install braid
-
-* Then
-
-      braid add git://github.com/brentgreeff/funktional.git -p
-      
-* Or via the gem
-
+* Via the gem
       gem install funktional
+
+* With braid
+      braid add git://github.com/brentgreeff/funktional.git -p
+
 
 * add a setup line to 'test/test_helper.rb'
 
