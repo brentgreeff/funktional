@@ -88,7 +88,15 @@ module Funktional
     
     def should_redirect_to(uri)
       _wrap_assertion do
-        assert_response :redirect
+        actual_template = @response.rendered[:template].to_s
+        
+        if actual_template.blank?
+          msg = "redirected to [#{@response.redirected_to}]"
+        else
+          msg = "rendered template [#{actual_template}]"
+        end
+        
+        assert_response :redirect, msg
         assert_redirected_to uri
       end
     end
