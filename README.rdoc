@@ -9,6 +9,10 @@
 * Then
 
       braid add git://github.com/brentgreeff/funktional.git -p
+      
+* Or via the gem
+
+      gem install funktional
 
 * add a setup line to 'test/test_helper.rb'
 
@@ -269,6 +273,8 @@ to get away from all the merge noise, I have defined these helpers:
         should :assign_new => Something
         
         assigned(Something).name.should_be 'something'
+        
+        assigned(:something).should_be { @something }
         
         should :create => Something
         

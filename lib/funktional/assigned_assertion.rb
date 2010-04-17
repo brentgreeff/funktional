@@ -18,7 +18,11 @@ module Funktional
       end
     end
     
-    def should_be(expected_value)
+    def should_be(expected_value=nil, &block)
+      if block_given?
+        expected_value ||= block.bind(@test).call
+      end
+      
       @test.assert_equal expected_value, @assigned
     end
     
@@ -34,6 +38,6 @@ module Funktional
     
     def type_safety_failed_msg
       "assigned [#{@symbol}] is not a [#{@klass}]"
-    end
+    end    
   end
 end

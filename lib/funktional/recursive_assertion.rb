@@ -8,7 +8,11 @@ module Funktional
       @test.assert_respond_to @assigned, @method
     end
     
-    def should_be(expected_value)
+    def should_be(expected_value=nil, &block)
+      if block_given?
+        expected_value ||= block.bind(@test).call
+      end
+      
       value = @assigned.send @method
       @test.assert_equal expected_value, value
     end

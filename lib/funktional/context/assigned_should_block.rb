@@ -8,11 +8,11 @@ module Funktional
       @blk = lambda do
         result = nil
         
-        recorder.__each_called do |meth, args|
+        recorder.__each_called do |meth, args, block|
           if result.nil?
-            result = assigned(recorder.__target).send(meth, *args)
+            result = assigned(recorder.__target).send(meth, *args, &block)
           else
-            result.send(meth, *args)
+            result.send(meth, *args, &block)
           end
         end
       end

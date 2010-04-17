@@ -1,2 +1,4 @@
 log/*
 test/test-app/log/*
+Manifest
+*.gem
