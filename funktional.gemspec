@@ -38,8 +38,7 @@ Gem::Specification.new do |s|
     "lib/funktional/route_checker.rb",
     "lib/funktional/setup.rb",
     "lib/funktional/test_class_methods.rb",
-    "lib/funktional/test_instance_methods.rb",
-    "tasks/should_b_tasks.rake"
+    "lib/funktional/test_instance_methods.rb"
   ]
   s.files = [
     "MIT-LICENSE",
@@ -74,7 +73,6 @@ Gem::Specification.new do |s|
     "lib/funktional/setup.rb",
     "lib/funktional/test_class_methods.rb",
     "lib/funktional/test_instance_methods.rb",
-    "tasks/should_b_tasks.rake",
     "test/fixtures/posts.yml",
     "test/fixtures/users.yml",
     "test/functional/users_controller_test.rb",
