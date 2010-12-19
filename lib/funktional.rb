@@ -1,6 +1,6 @@
 Rails.backtrace_cleaner.add_silencer { |line| line =~ /funktional/ }
 
-require 'test_help'
+require 'rails/test_help'
 
 require 'funktional/test_instance_methods'
 require 'funktional/test_class_methods'
