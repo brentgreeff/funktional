@@ -58,7 +58,7 @@ module Funktional
     
     def should_render_404(expected_template = 'public/404')
       _wrap_assertion do
-        actual_template = @response.rendered[:template].to_s
+        actual_template = get_actual_template
         
         if actual_template.blank?
           msg = "redirected to [#{@response.redirected_to}]"
@@ -88,10 +88,10 @@ module Funktional
     
     def should_redirect_to(uri)
       _wrap_assertion do
-        actual_template = @response.rendered[:template].to_s
+        actual_template = get_actual_template
         
         if actual_template.blank?
-          msg = "redirected to [#{@response.redirected_to}]"
+          msg = "redirected to [#{@response.redirect_url}]"
         else
           msg = "rendered template [#{actual_template}]"
         end
@@ -99,6 +99,12 @@ module Funktional
         assert_response :redirect, msg
         assert_redirected_to uri
       end
+    end
+    
+    def get_actual_template
+      all = @templates.keys
+      all -= (all.grep /\/_/)
+      all.reject {|e| e =~ /layout/}.first
     end
     
     def should_respond(expected_response)
