@@ -88,7 +88,8 @@ module Funktional
     end
     
     def assert_message(field, expected_error_message)
-      Funktional.test_instance.assert_equal(expected_error_message, self.errors[field])
+      error = self.errors[field].first
+      Funktional.test_instance.assert_equal(expected_error_message, error)
     end
     
     def must_be_valid_before_test!
