@@ -9,7 +9,7 @@ require "#{test_app}/config/environment.rb"
 
 # Load the testing framework
 require 'test_help'
-silence_warnings { RAILS_ENV = ENV['RAILS_ENV'] }
+silence_warnings { Rails.env = ENV['RAILS_ENV'] }
 
 # Run the migrations
 ActiveRecord::Migration.verbose = false
