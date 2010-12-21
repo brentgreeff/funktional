@@ -40,7 +40,7 @@ ActiveSupport::TestCase.send(:include, Funktional::AttributeTestHelper)
 
 ActiveSupport::TestCase.send(:include, Funktional::Setup)
 
-if RAILS_ENV.eql? 'test' or $0 == 'irb'
+if Rails.env.eql? 'test' or $0 == 'irb'
   require 'funktional/random_characters'
   Integer.send :include, Funktional::RandomCharacters
 end
