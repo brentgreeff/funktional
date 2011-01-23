@@ -61,7 +61,7 @@ module Funktional
         actual_template = get_actual_template
         
         if actual_template.blank?
-          msg = "redirected to [#{@response.redirected_to}]"
+          msg = "redirected to [#{@response.redirect_url}]"
         else
           msg = "rendered template [#{actual_template}]"
         end
