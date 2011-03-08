@@ -16,7 +16,7 @@ module Funktional
           when :subject
             then assert_equal expectations[:subject], email.subject
           when :containing
-            then check_containing(expectations[:containing], email.body)
+            then check_containing(expectations[:containing], email.body.raw_source)
           else
             flunk "Assertion key: [#{key}] not recognised"
         end
