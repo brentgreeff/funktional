@@ -1,11 +1,12 @@
 module Funktional
   class EmailAssertion < Funktional::Assertion
+    
     def initialize(expectations)
       if ActionMailer::Base.deliveries.size < 1
         flunk 'No emails have been sent'
       end
       
-      email = ActionMailer::Base.deliveries.last
+      email = Email.find_closest(ActionMailer::Base.deliveries, expectations)
       
       expectations.each_key do |key|
         case key
@@ -16,7 +17,7 @@ module Funktional
           when :subject
             then assert_equal expectations[:subject], email.subject
           when :containing
-            then check_containing(expectations[:containing], email.body.raw_source)
+            then check_containing(expectations[:containing], email.body)
           else
             flunk "Assertion key: [#{key}] not recognised"
         end
@@ -27,14 +28,14 @@ module Funktional
       if email_from.nil?
         flunk 'email is missing a [from]'
       end
-      assert_equal expected_from, email_from[0]
+      assert_equal expected_from, email_from
     end
     
     def check_to(expected_to, email_to)
       if email_to.nil?
         flunk 'email is missing a [to]'
       end
-      assert_equal expected_to, email_to[0]
+      assert_equal expected_to, email_to
     end
     
     def check_containing(should_contain, body)

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{funktional}
-  s.version = "3.0.6"
+  s.version = "3.1.6"
   
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brent Greeff and Felix Clack"]
@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
     "lib/funktional.rb",
     "lib/funktional/assertion.rb",
     "lib/funktional/assigned_assertion.rb",
+    "lib/funktional/email.rb",
     "lib/funktional/attribute_test_helper.rb",
     "lib/funktional/context.rb",
     "lib/funktional/context/assigned_should_block.rb",
@@ -47,6 +48,7 @@ Gem::Specification.new do |s|
     "lib/funktional.rb",
     "lib/funktional/assertion.rb",
     "lib/funktional/assigned_assertion.rb",
+    "lib/funktional/email.rb",
     "lib/funktional/attribute_test_helper.rb",
     "lib/funktional/context.rb",
     "lib/funktional/context/assigned_should_block.rb",
