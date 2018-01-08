@@ -1,5 +1,11 @@
 = Funktional
 
+== Deprecated: 
+
+Back in the days when controller specs were a good idea and Rspec wasnt all mighty, there was a little testing framework that could.
+
+Rspec has added many great features over the years. Although I really enjoyed coding this, request specs are a superior solution.
+
 == A Rails testing framework with a railsy syntax
 
 == Install
