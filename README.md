@@ -1,7 +1,5 @@
-> [\!CAUTION]
-> This repository is deprecated and no longer maintained.
-
-# Funktional
+> [!CAUTION]
+> This repository is deprecated and no longer maintained.# Funktional
 
 ## Deprecated:
 
